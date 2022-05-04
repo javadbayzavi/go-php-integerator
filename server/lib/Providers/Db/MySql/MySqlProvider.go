@@ -1,7 +1,7 @@
 package MySql
 
 import (
-	"go-microservices/Lib/Entities"
+	"go-microservices/lib/Entities"
 )
 
 type MySqlProvider struct {

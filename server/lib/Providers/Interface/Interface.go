@@ -1,7 +1,7 @@
 package Interface
 
 import (
-	"go-microservices/Lib/Entities"
+	"go-microservices/lib/Entities"
 )
 
 type ProviderInterface interface {

@@ -3,8 +3,8 @@ package Employees
 import (
 	"encoding/json"
 	_ "encoding/json"
-	"go-microservices/Lib/Controllers"
 	"go-microservices/Models/Employees"
+	"go-microservices/lib/Controllers"
 )
 
 type EmployeeList struct {

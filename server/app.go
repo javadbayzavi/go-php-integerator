@@ -30,11 +30,3 @@ func main() {
 	// Start Server on defined port/host.
 	server.ListenAndServe()
 }
-
-//Get request handler
-
-func doGet(response http.ResponseWriter, request *http.Request) {
-
-}
-
-//Post request handler

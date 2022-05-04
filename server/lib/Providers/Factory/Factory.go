@@ -1,9 +1,9 @@
 package Factory
 
 import (
-	"go-microservices/Lib/Core/Source"
-	"go-microservices/Lib/Providers/Db/MySql"
-	"go-microservices/Lib/Providers/Interface"
+	"go-microservices/lib/Core/Source"
+	"go-microservices/lib/Providers/Db/MySql"
+	"go-microservices/lib/Providers/Interface"
 )
 
 func CreateProvider() Interface.ProviderInterface {
