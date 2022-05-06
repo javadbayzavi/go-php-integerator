@@ -1,3 +1,10 @@
+/*
+*** @author: Javad Bayzavi
+*** @version: 1.0.1
+*** @email: javadbayzavi@gmail.com
+*** @year: 2021
+*/
+
 package Interface
 
 import (
@@ -5,8 +12,8 @@ import (
 )
 
 type ProviderInterface interface {
-	Find() Entities.Entity
-	List() []Entities.Entity
+	Find(params map[string]string) *Entities.Entity
+	List(params map[string]string) []*Entities.Entity
 	Insert() bool
 	Update() bool
 	Delete() bool

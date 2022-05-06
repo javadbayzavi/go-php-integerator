@@ -1,3 +1,10 @@
+/*
+*** @author: Javad Bayzavi
+*** @version: 1.0.1
+*** @email: javadbayzavi@gmail.com
+*** @year: 2021
+ */
+
 package Employees
 
 import (
@@ -11,7 +18,7 @@ type EmployeeList struct {
 	Controllers.Controller
 }
 
-func (this EmployeeList) DoRun(params []string) string {
+func (this *EmployeeList) processMe(params map[string]string) (string, error) {
 	//Fetch employees from DAO through data provider
 	EmployeeDAO := Employees.EmployeeModel{}
 
@@ -22,5 +29,5 @@ func (this EmployeeList) DoRun(params []string) string {
 	empjson, _ := json.MarshalIndent(EmployeeDAO.List(params), "", "  ")
 
 	//convert encoded data into a string format
-	return string(empjson)
+	return string(empjson), nil
 }
