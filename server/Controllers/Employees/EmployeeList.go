@@ -18,7 +18,7 @@ type EmployeeList struct {
 	Controllers.Controller
 }
 
-func (this *EmployeeList) processMe(params map[string]string) (string, error) {
+func (this EmployeeList) ProcessMe(params map[string]string) string {
 	//Fetch employees from DAO through data provider
 	EmployeeDAO := Employees.EmployeeModel{}
 
@@ -29,5 +29,5 @@ func (this *EmployeeList) processMe(params map[string]string) (string, error) {
 	empjson, _ := json.MarshalIndent(EmployeeDAO.List(params), "", "  ")
 
 	//convert encoded data into a string format
-	return string(empjson), nil
+	return string(empjson)
 }

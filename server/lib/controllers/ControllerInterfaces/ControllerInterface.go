@@ -12,6 +12,12 @@ import (
 )
 
 type ControllerInterface interface {
-	Run(params map[string]string) (http.HandlerFunc, error)
-	processMe([]string) (string, error)
+	//For CLI request process
+	Run(params map[string]string) string
+
+	//Handle http based requests
+	HandleMe(context ControllerInterface, params map[string]string) http.HandlerFunc
+
+	//Strategy engine handler
+	ProcessMe(params map[string]string) string
 }

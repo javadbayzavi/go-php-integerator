@@ -3,7 +3,7 @@
 *** @version: 1.0.1
 *** @email: javadbayzavi@gmail.com
 *** @year: 2021
-*/
+ */
 
 package Models
 
@@ -19,5 +19,8 @@ type Model struct {
 func (this Model) Init() {
 	provder := Factory.CreateProvider()
 	this.Provider = &provder
-	// this.Provider = Factory.CreateProvider()
+}
+
+func (this Model) GetProvider() Interface.ProviderInterface {
+	return *this.Provider
 }

@@ -13,8 +13,10 @@ import (
 )
 
 type ExecutorInterface interface {
-	execute(params map[string]string) (bool, error)
-	executeAsHandler(params map[string]string) (http.HandlerFunc, error)
-	executeAsync(params map[string]string) (bool, error)
-	initiateEngine(context ControllerInterfaces.ControllerInterface)
+	Execute(params map[string]string) string
+	ExecuteAsHandler(params map[string]string) http.HandlerFunc
+	ExecuteAsync(params map[string]string) (bool, error)
+	initiateEngine(context *ControllerInterfaces.ControllerInterface)
+	SetTarget(target *ControllerInterfaces.ControllerInterface)
+	GetTarget() *ControllerInterfaces.ControllerInterface
 }

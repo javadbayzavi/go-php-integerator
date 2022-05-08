@@ -1,38 +1,37 @@
-/*
-*** @author: Javad Bayzavi
-*** @version: 1.0.1
-*** @email: javadbayzavi@gmail.com
-*** @year: 2021
- */
-
 package Controllers
 
 import (
 	"go-microservices/lib/Controllers/ControllerInterfaces"
 	"go-microservices/lib/Controllers/Executors"
-	"go-microservices/lib/Controllers/Executors/ExecutorInterfaces"
 	"net/http"
 )
 
 type Controller struct {
 	ControllerInterfaces.ControllerInterface
-	executor ExecutorInterfaces.ExecutorInterface
+	executor *Executors.Executor
 }
 
 //Create a generic http response helper for all incoming requests
-func (this *Controller) Run(params map[string]string) (http.HandlerFunc, error) {
+func (this *Controller) Run(params map[string]string) string {
 
 	//Checking for the configuration of the execution engine
 	if this.executor == nil {
-		this.executor = Executors.Executor{target: this}
+		//TODO: check for the context of execution engine {Web, CLI, Microservice}
+		this.executor = &Executors.Executor{}
+		this.executor.SetTarget(this)
 	}
+	this.executor.Execute(params)
+	return ""
+}
 
-	return func(rw http.ResponseWriter, r *http.Request) {
+//Create a generic http response helper for all incoming requests
+func (this *Controller) HandleMe(me ControllerInterfaces.ControllerInterface, params map[string]string) http.HandlerFunc {
 
-		rw.Header().Add("content-type", "application/json")
-		rw.WriteHeader(http.StatusFound)
-
-		//Wrap the response into the http header as sequence of bytes
-		//rw.Write([]byte(this.DoRun(params)))
+	//Checking for the configuration of the execution engine
+	if this.executor == nil {
+		//TODO: check for the context of execution engine {Web, CLI, Microservice}
+		this.executor = &Executors.Executor{}
+		this.executor.SetTarget(*&me)
 	}
+	return this.executor.ExecuteAsHandler(params)
 }

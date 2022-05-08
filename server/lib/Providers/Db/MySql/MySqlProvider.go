@@ -1,47 +1,48 @@
-/*
-*** @author: Javad Bayzavi
-*** @version: 1.0.1
-*** @email: javadbayzavi@gmail.com
-*** @year: 2021
-*/
-
 package MySql
 
 import (
-	"go-microservices/lib/Entities"
+	"database/sql"
 )
 
 type MySqlProvider struct {
 	host       string
+	port       string
 	user       string
 	password   string
 	datasource string
+	connection *sql.DB
+	Result     *sql.Rows
 }
 
 //TODO: find a way to implement all of Provider Interface methods
 
-func (this *MySqlProvider) Find(params map[string]string) *Entities.Entity {
-	return &Entities.Entity{}
+func (this MySqlProvider) Query(params map[string]string) {
+	var query string = params["query"]
+	if this.connection.Stats().InUse > 0 {
+		rows, rr := this.connection.Query(query)
+		if rr == nil {
+			this.Result = rows
+		}
+	}
 }
 
-func (this *MySqlProvider) List(params map[string]string) []*Entities.Entity {
-	return make([]*Entities.Entity, 0)
+func (this MySqlProvider) GetResult() *sql.Rows {
+	return this.Result
 }
 
-func (this *MySqlProvider) Insert() bool {
-	return true
+func (this *MySqlProvider) createConnectionString() string {
+	return this.GetUser() + ":" + this.password + "@tcp(" +
+		this.host + ":" + this.GetPort() + ")/" + this.GetDatasource()
 }
-
-func (this *MySqlProvider) Update() bool {
-	return true
-}
-
-func (this *MySqlProvider) Delete() bool {
-	return true
-}
-
-func (this *MySqlProvider) Connect() bool {
-	return true
+func (this MySqlProvider) Connect() bool {
+	db, err := sql.Open("mysql", this.createConnectionString())
+	//db, err := sql.Open("mysql", "root:password1@tcp(127.0.0.1:3306)/test")
+	this.connection = db
+	if err != nil {
+		return false
+	} else {
+		return true
+	}
 }
 
 //Setters
@@ -53,11 +54,13 @@ func (this *MySqlProvider) SetPassword(value string) {
 }
 
 func (this *MySqlProvider) SetHost(value string) {
-	this.password = value
+	this.host = value
 }
-
+func (this *MySqlProvider) SetPort(value string) {
+	this.port = value
+}
 func (this *MySqlProvider) SetDatasource(value string) {
-	this.password = value
+	this.datasource = value
 }
 
 //Getters
@@ -70,6 +73,10 @@ func (this *MySqlProvider) GetPassword() string {
 
 func (this *MySqlProvider) GetHost() string {
 	return this.host
+}
+
+func (this *MySqlProvider) GetPort() string {
+	return this.port
 }
 
 func (this *MySqlProvider) GetDatasource() string {
